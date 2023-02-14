@@ -5,14 +5,25 @@ import java.util.Objects;
 
 import org.andlemro.test.sprintboot.app.springboot_test.esceptions.DineroInsuficienteException;
 
-public class Cuenta {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name="cuentas")
+public class Cuenta {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	
 	private String persona;
 	private BigDecimal saldo;
 
 	public Cuenta() {
-		super();
 	}
 
 	public Cuenta(Long id, String persona, BigDecimal saldo) {
