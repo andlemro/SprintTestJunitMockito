@@ -1,12 +1,14 @@
 package org.andlemro.test.sprintboot.app.springboot_test.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.andlemro.test.sprintboot.app.springboot_test.models.Banco;
 import org.andlemro.test.sprintboot.app.springboot_test.models.Cuenta;
 import org.andlemro.test.sprintboot.app.springboot_test.repositories.BancoRepository;
 import org.andlemro.test.sprintboot.app.springboot_test.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /***
  * Mediante la anotacion @Service, nos permite indicar que vamos a registrar esta clase
@@ -27,23 +29,27 @@ public class CuentaServiceImpl implements CuentaService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Cuenta findById(Long id) {
 		return cuentaRepository.findById(id).orElseThrow();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public int revisarTotalTransferencias(Long bancoId) {
 		Banco banco = bancoRepository.findById(bancoId).orElseThrow();
 		return banco.getTotalTransferencias();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public BigDecimal revisarSaldo(Long cuentaId) {
 		Cuenta cuenta = cuentaRepository.findById(cuentaId).orElseThrow();
 		return cuenta.getSaldo();
 	}
 
 	@Override
+	@Transactional
 	public void transferir(Long numCuentaOrigen, Long numCuentaDestino, BigDecimal monto,
 			Long bancoId) {
 		
@@ -59,6 +65,18 @@ public class CuentaServiceImpl implements CuentaService {
 		int totalTransferencia = banco.getTotalTransferencias();
 		banco.setTotalTransferencias(++totalTransferencia);
 		bancoRepository.save(banco);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Cuenta> findAll() {
+		return cuentaRepository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public Cuenta save(Cuenta cuenta) {
+		return cuentaRepository.save(cuenta);
 	}
 	
 }

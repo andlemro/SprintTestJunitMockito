@@ -5,6 +5,9 @@ import static org.mockito.Mockito.*;
 import static org.andlemro.test.sprintboot.app.springboot_test.Datos.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.andlemro.test.sprintboot.app.springboot_test.esceptions.DineroInsuficienteException;
 import org.andlemro.test.sprintboot.app.springboot_test.models.Banco;
@@ -123,6 +126,48 @@ class SpringbootTestApplicationTests {
 		assertEquals("Andres", cuenta1.getPersona());
 		assertEquals("Andres", cuenta2.getPersona());
 		verify(cuentaRepository, times(2)).findById(1L);
+	}
+	
+	@Test
+	void testFinAll() {
+		// Given
+		List<Cuenta> datos = Arrays.asList(
+				crearCuenta001().orElseThrow(),
+				crearCuenta002().orElseThrow()
+		);
+		
+		when(cuentaRepository.findAll()).thenReturn(datos);
+		
+		// when
+		List<Cuenta> cuentas = service.findAll();
+		
+		// Then
+		assertFalse(cuentas.isEmpty());
+		assertEquals(2, cuentas.size());
+		assertTrue(cuentas.contains(crearCuenta002().orElseThrow()));
+		
+		verify(cuentaRepository).findAll();
+	}
+	
+	@Test
+	void testSave() {
+		// Given
+		Cuenta cuentaPepe = new Cuenta(null, "Pepe", new BigDecimal("3000"));
+		when(cuentaRepository.save(any())).then(invocation -> {
+			Cuenta c = invocation.getArgument(0);
+			c.setId(3L);
+			return c;
+		});
+		
+		// When
+		Cuenta cuenta = service.save(cuentaPepe);
+		
+		// then
+		assertEquals("Pepe", cuenta.getPersona());
+		assertEquals(3,cuenta.getId());
+		assertEquals("3000", cuenta.getSaldo().toPlainString());
+		
+		verify(cuentaRepository).save(any());
 	}
 
 }
