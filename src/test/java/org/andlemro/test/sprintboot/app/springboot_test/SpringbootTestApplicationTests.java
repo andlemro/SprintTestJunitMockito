@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import static org.andlemro.test.sprintboot.app.springboot_test.Datos.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,11 +14,7 @@ import org.andlemro.test.sprintboot.app.springboot_test.models.Cuenta;
 import org.andlemro.test.sprintboot.app.springboot_test.repositories.BancoRepository;
 import org.andlemro.test.sprintboot.app.springboot_test.repositories.CuentaRepository;
 import org.andlemro.test.sprintboot.app.springboot_test.services.CuentaService;
-import org.andlemro.test.sprintboot.app.springboot_test.services.CuentaServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
